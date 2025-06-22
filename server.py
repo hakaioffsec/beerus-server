@@ -6,7 +6,7 @@ import shutil
 app = Flask(__name__)
 
 UPLOAD_FOLDER = 'uploads'
-EXTRACT_FOLDER = 'apps'
+EXTRACT_FOLDER = 'data'
 ALLOWED_EXTENSIONS = {'tar.gz'}
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -21,14 +21,14 @@ def allowed_file(filename):
 @app.route('/', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        print("Nenhum arquivo enviado")
-        return jsonify({'error': 'Nenhum arquivo enviado'}), 400
+        print("No file sent")
+        return jsonify({'error': 'No file sent'}), 400
 
     file = request.files['file']
 
     if file.filename == '':
-        print("Nome do arquivo inválido")
-        return jsonify({'error': 'Nenhum arquivo selecionado'}), 400
+        print("Invalid filename")
+        return jsonify({'error': 'No file selected'}), 400
 
     if file and allowed_file(file.filename):
         filename = file.filename
@@ -46,14 +46,14 @@ def upload_file():
 
             return jsonify({
                 'success': True,
-                'message': f'Arquivo {filename} recebido e extraído em {extract_path}'
+                'message': f'File {filename} received and extracted to {extract_path}'
             })
 
         except Exception as e:
-            return jsonify({'error': f'Erro ao extrair o arquivo: {str(e)}'}), 500
+            return jsonify({'error': f'Error extracting file: {str(e)}'}), 500
 
-    print("Tipo de arquivo não permitido")
-    return jsonify({'error': 'Tipo de arquivo não permitido'}), 400
+    print("File type not allowed")
+    return jsonify({'error': 'File type not allowed'}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=6524)
