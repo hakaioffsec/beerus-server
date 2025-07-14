@@ -55,5 +55,9 @@ def upload_file():
     print("File type not allowed")
     return jsonify({'error': 'File type not allowed'}), 400
 
+@app.route('/check', methods=['GET'])
+def checkServer():
+    return jsonify({'app': 'Beerus Server', 'version': '1.0'}), 200
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=6524)
